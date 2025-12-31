@@ -1,5 +1,7 @@
+# core/models/school.py
+
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator,EmailValidator
 
 from .base_model import BaseModel  # import محلی از داخل فولدر models
 
@@ -27,9 +29,15 @@ class School(BaseModel):
         validators=[RegexValidator(r'^09\d{9}$', 'شماره موبایل باید با ۰۹ شروع شود و ۱۱ رقم باشد.')],
         verbose_name="موبایل مسئول آموزش"
     )
+    manager_email = models.EmailField(
+        blank=True, null=True,
+        validators=[EmailValidator(message='ایمیل معتبر وارد کنید')],
+        verbose_name="ایمیل مسئول آموزش")
+
     fabric_color_image = models.ImageField(
         upload_to='schools/fabric/', blank=True, null=True, verbose_name="عکس نمونه پارچه"
     )
+    contract_date = models.DateField(null=True, blank=True, verbose_name="تاریخ قرارداد")
 
     class Meta:
         verbose_name = "مدرسه"
