@@ -4,9 +4,13 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .base_model import BaseModel
-
+from  .academic_year import AcademicYear
 
 class ClassRoom(BaseModel):
+    academic_year = models.ForeignKey(
+        'AcademicYear',
+        on_delete=models.PROTECT,
+        verbose_name="سال تحصیلی")
     school = models.ForeignKey('School', on_delete=models.PROTECT, related_name='classes', verbose_name="مدرسه")  # string notation برای جلوگیری از circular import
     grade = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(12)],
@@ -15,7 +19,7 @@ class ClassRoom(BaseModel):
     section = models.CharField(max_length=10, blank=True, null=True, verbose_name="شعبه (مثلاً الف، ب)")
 
     class Meta:
-        unique_together = ['school', 'grade', 'section']
+        unique_together = ['school', 'grade', 'section','academic_year']
         verbose_name = "کلاس"
         verbose_name_plural = "کلاس‌ها"
         ordering = ['grade']
@@ -30,4 +34,4 @@ class ClassRoom(BaseModel):
             raise ValidationError("متوسطه دوم فقط پایه‌های ۱۰، ۱۱ و ۱۲ را شامل می‌شود.")
 
     def __str__(self):
-        return f"{self.school.name} - پایه {self.grade} {self.section or ''}".strip()
+        return f"{self.school} - {self.grade} {self.section or ''} ({self.academic_year})"

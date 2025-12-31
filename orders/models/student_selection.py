@@ -2,11 +2,12 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from core.models import BaseModel, Student
+from core.models import BaseModel, Student,AcademicYear
 from uniforms.models import ClothingSize, AgreedPrice
 
 
 class StudentSelection(BaseModel):
+    academic_year = models.ForeignKey('core.AcademicYear', on_delete=models.PROTECT, verbose_name="سال تحصیلی")
     student = models.OneToOneField(
         'core.Student',
         on_delete=models.PROTECT,
@@ -35,6 +36,7 @@ class StudentSelection(BaseModel):
     is_paid = models.BooleanField(default=False, verbose_name="تسویه کامل شده؟")
 
     class Meta:
+        unique_together = ['academic_year', 'student']
         verbose_name = "انتخاب سایز دانش‌آموز"
         verbose_name_plural = "انتخاب‌های سایز دانش‌آموزان"
 

@@ -1,10 +1,11 @@
 # orders/models/payment_transaction.py
 from django.db import models
 
-from core.models import BaseModel, Student
+from core.models import BaseModel, Student,AcademicYear
 
 
 class PaymentTransaction(BaseModel):
+    academic_year = models.ForeignKey('core.AcademicYear', on_delete=models.PROTECT, verbose_name="سال تحصیلی")
     TYPE_CHOICES = [
         ('ADVANCE', 'علی‌الحساب'),
         ('FINAL', 'تسویه نهایی'),

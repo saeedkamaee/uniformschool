@@ -2,11 +2,12 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from core.models import BaseModel, School
+from core.models import BaseModel, School,AcademicYear
 from .clothing_size import ClothingSize
 
 
 class AgreedPrice(BaseModel):
+    academic_year = models.ForeignKey('core.AcademicYear', on_delete=models.PROTECT, verbose_name="سال تحصیلی")
     school = models.ForeignKey(
         School,
         on_delete=models.PROTECT,
@@ -36,7 +37,7 @@ class AgreedPrice(BaseModel):
         return self.agreed_amount - self.advance_amount
 
     class Meta:
-        unique_together = ['school', 'clothing_size']
+        unique_together = ['academic_year','school', 'clothing_size']
         verbose_name = "قیمت توافقی"
         verbose_name_plural = "قیمت‌های توافقی"
 
