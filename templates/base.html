@@ -1,16 +1,21 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}سامانه سفارش لباس فرم{% endblock %}</title>
+    <title>{% block title %}سامانه لباس فرم{% endblock %}</title>
+
     <!-- بوت‌استرپ ۵ -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- استایل سفارشی -->
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-light">
+
+    <!-- نوار ناوبری -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">سامانه لباس فرم</a>
@@ -19,23 +24,41 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'school_create' %}">ثبت مدرسه جدید</a></li>
-                    <!-- بعداً لینک‌های دیگر اضافه می‌شه -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'school_create' %}">ثبت مدرسه جدید</a>
+                    </li>
+                    <!-- بعداً لینک‌های دیگر اضافه می‌کنیم -->
                 </ul>
             </div>
         </div>
     </nav>
 
+    <!-- محتوای اصلی -->
     <main class="container py-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
 
+    <!-- فوتر -->
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p>© ۱۴۰۴ سامانه سفارش لباس فرم مدارس</p>
     </footer>
 
+    <!-- جاوااسکریپت بوت‌استرپ -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- جاوااسکریپت سفارشی -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

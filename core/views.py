@@ -1,11 +1,12 @@
 # core/views.py
+from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from .forms.school_form import SchoolForm
 
 
-def school_create(request):
+def school_create(request:HttpRequest):
     if request.method == 'POST':
         form = SchoolForm(request.POST, request.FILES)
         if form.is_valid():

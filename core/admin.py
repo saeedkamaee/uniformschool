@@ -1,32 +1,22 @@
 # core/admin.py
 from django.contrib import admin
-from .models import School, ClassRoom, Student
+from django_jalali.admin.filters import JDateFieldListFilter # برای نمایش تاریخ شمسی در فیلترها
+from .models import AcademicYear, School, ClassRoom, Student
 
 
-@admin.register(School)
-class SchoolAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_gender_display', 'get_level_display', 'education_manager', 'manager_phone', 'contract_date']
-    list_filter = ['gender', 'level']
-    search_fields = ['name', 'education_manager']
-    date_hierarchy = 'contract_date'  # برای فیلتر تاریخ قرارداد
-    readonly_fields = ['created_at', 'updated_at']  # فقط نمایش، نه ویرایش
+@admin.register(AcademicYear)
+class AcademicYearAdmin(admin.ModelAdmin):
+    list_display = ['year', 'is_default', 'start_date', 'end_date']
+    list_filter = ['is_default', ('start_date', JDateFieldListFilter), ('end_date', JDateFieldListFilter)]
+    search_fields = ['year']
+    actions = ['make_default']  # اکشن برای تنظیم پیش‌فرض
 
-    fieldsets = (
-        ('اطلاعات پایه', {
-            'fields': ('name', 'gender', 'level')
-        }),
-        ('اطلاعات تماس', {
-            'fields': ('address', 'education_manager', 'manager_phone')
-        }),
-        ('قرارداد و ظاهر', {
-            'fields': ('contract_date', 'fabric_color_image')
-        }),
-        ('زمان‌بندی', {
-            'fields': ('created_at', 'updated_at', 'description'),
-            'classes': ('collapse',)
-        }),
-    )
+    def make_default(self, request, queryset):
+        queryset.update(is_default=False)
+        queryset.update(is_default=True)
+        self.message_user(request, "سال تحصیلی انتخاب‌شده به عنوان پیش‌فرض تنظیم شد.")
+    make_default.short_description = "تنظیم به عنوان سال پیش‌فرض"
 
-
+admin.site.register(School)
 admin.site.register(ClassRoom)
 admin.site.register(Student)
