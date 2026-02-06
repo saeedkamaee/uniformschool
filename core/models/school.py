@@ -22,7 +22,7 @@ class School(BaseModel):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, verbose_name="جنسیت")
     level = models.CharField(max_length=10, choices=LEVEL_CHOICES, verbose_name="مقطع تحصیلی")
     address = models.TextField(blank=True, null=True, verbose_name="آدرس مدرسه")
-    education_manager = models.CharField(max_length=100, blank=True, null=True, verbose_name="نام مسئول آموزش")
+    education_manager = models.CharField(max_length=100, verbose_name="نام مسئول آموزش")
     manager_phone = models.CharField(
         max_length=11,
         blank=True, null=True,

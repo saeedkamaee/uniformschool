@@ -2,7 +2,6 @@
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
 from .forms.school_form import SchoolForm
 
 
@@ -11,17 +10,10 @@ def school_create(request:HttpRequest):
         form = SchoolForm(request.POST, request.FILES)
         if form.is_valid():
             school = form.save()
-            messages.success(
-                request,
-                _(f'مدرسه "{school.name}" با موفقیت ثبت شد.')
-            )
-            return redirect('school_create') 
+            messages.success(request, f'مدرسه "{school.name}" با موفقیت ثبت شد.')
+            return redirect('school_list')  # بعداً لیست می‌سازیم
         else:
-            # پیام خطای کلی برای فرم ناقص
-            messages.error(
-                request,
-                _('لطفاً تمام فیلدهای اجباری را پر کنید یا داده‌های نادرست را اصلاح کنید.')
-            )
+            messages.error(request, 'لطفاً فیلدهای اجباری را پر کنید یا داده‌ها را اصلاح کنید.')
     else:
         form = SchoolForm()
 
