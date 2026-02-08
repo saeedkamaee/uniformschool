@@ -16,7 +16,11 @@ class AcademicYearAdmin(admin.ModelAdmin):
         queryset.update(is_default=True)
         self.message_user(request, "سال تحصیلی انتخاب‌شده به عنوان پیش‌فرض تنظیم شد.")
     make_default.short_description = "تنظیم به عنوان سال پیش‌فرض"
-
+    
+    def save_model(self, request, obj, form, change):
+        if obj.is_default:
+            AcademicYear.objects.filter(is_default=True).exclude(pk=obj.pk).update(is_default=False)
+        super().save_model(request, obj, form, change)
 admin.site.register(School)
 admin.site.register(ClassRoom)
 admin.site.register(Student)

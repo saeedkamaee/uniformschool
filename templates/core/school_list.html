@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}لیست مدارس{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">لیست مدارس ثبت‌شده</h2>
+        <a href="{% url 'school_create' %}" class="btn btn-primary">ثبت مدرسه جدید</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-center" style="width: 60px;">ردیف</th>
+                    <th scope="col">نام مدرسه</th>
+                    <th scope="col">جنسیت</th>
+                    <th scope="col">مقطع</th>
+                    <th scope="col">مسئول آموزش</th>
+                    <th scope="col">موبایل مسئول</th>
+                    <th scope="col">ایمیل مسئول</th>
+                   
+                    <th scope="col" class="text-center" style="width: 180px;">عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for school in schools %}
+                <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td>
+                        <strong>{{ school.name }}</strong>
+                    </td>
+                    <td>{{ school.get_gender_display }}</td>
+                    <td>{{ school.get_level_display }}</td>
+                    <td>{{ school.education_manager|default:"—" }}</td>
+                    <td>{{ school.manager_phone|default:"—" }}</td>
+                    <td>{{ school.manager_email|default:"—" }}</td>
+            
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <!-- ویرایش مدرسه -->
+                            <a href="#" class="btn btn-outline-primary" title="ویرایش مدرسه">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <!-- ثبت کلاس برای این مدرسه -->
+                            <a href="#" class="btn btn-outline-success" title="ثبت کلاس">
+                                <i class="bi bi-book"></i>
+                            </a>
+                            <!-- ثبت قرارداد -->
+                            <a href="#" class="btn btn-outline-info" title="ثبت قرارداد">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center py-4 text-muted">
+                        هنوز هیچ مدرسه‌ای ثبت نشده است.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
